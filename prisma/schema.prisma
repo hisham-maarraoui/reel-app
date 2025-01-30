@@ -1,0 +1,40 @@
+model Video {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  url         String
+  userId      String
+  createdAt   DateTime  @default(now())
+  likes       Like[]
+  comments    Comment[]
+  favorites   Favorite[]
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  videoId   String
+  userId    String
+  createdAt DateTime @default(now())
+  video     Video    @relation(fields: [videoId], references: [id])
+
+  @@unique([videoId, userId])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  videoId   String
+  userId    String
+  createdAt DateTime @default(now())
+  video     Video    @relation(fields: [videoId], references: [id])
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  videoId   String
+  userId    String
+  createdAt DateTime @default(now())
+  video     Video    @relation(fields: [videoId], references: [id])
+
+  @@unique([videoId, userId])
+} 
